@@ -27,7 +27,7 @@ const Home = () => {
                 </Button>
               </Link>
               <Link to="/conditions">
-                <Button variant="outline" className="text-lg py-6 px-8 border-mentora-blue text-[#2F2F2F] hover:bg-mentora-blue/10 dark:text-white">
+                <Button variant="outline" className="text-lg py-6 px-8 border-mentora-blue text-[#2F2F2F] hover:bg-mentora-blue/10 dark:text-white dark:border-white dark:bg-white/10 dark:hover:bg-white/20">
                   Do You Know Yourself?
                 </Button>
               </Link>
