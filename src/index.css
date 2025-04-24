@@ -74,7 +74,7 @@
   }
   
   body {
-    @apply bg-white text-[#2F2F2F];
+    @apply bg-white text-[#2F2F2F] dark:bg-gray-900 dark:text-white;
     color: #2F2F2F;
   }
   
@@ -87,12 +87,21 @@
     color: #2F2F2F;
   }
   
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
+  .dark p, .dark span, .dark li, .dark label {
+    color: #FFFFFF;
+  }
+  
   .subtext {
     color: #6E7E91;
   }
   
+  .dark .subtext {
+    color: #C8C8C9;
+  }
+  
   .mentora-card {
-    @apply bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300;
+    @apply bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 dark:bg-gray-800;
   }
   
   .mentora-button {
@@ -104,6 +113,10 @@
   }
   
   .glass-card {
-    @apply backdrop-blur-md bg-white/80 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-2xl shadow-lg;
+    @apply backdrop-blur-md bg-white/80 border border-white/20 rounded-2xl shadow-lg;
+  }
+  
+  .dark .glass-card {
+    @apply bg-gray-800/90 border-gray-700/30 shadow-xl;
   }
 }

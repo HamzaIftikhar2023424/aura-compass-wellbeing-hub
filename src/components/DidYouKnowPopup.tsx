@@ -81,10 +81,10 @@ const DidYouKnowPopup = () => {
   
   return (
     <div className="fixed top-6 right-6 max-w-xs z-50 animate-pop-in">
-      <div className="glass-card p-4 pr-10 shadow-lg">
+      <div className="glass-card p-4 pr-10 shadow-lg dark:bg-gray-800 dark:border-mentora-brightPink/30">
         <button 
           onClick={handleClose} 
-          className="absolute top-3 right-3 text-mentora-subtext hover:text-mentora-brightPink"
+          className="absolute top-3 right-3 text-mentora-subtext hover:text-mentora-brightPink dark:text-white"
           aria-label="Close"
         >
           <X size={16} />
@@ -92,8 +92,8 @@ const DidYouKnowPopup = () => {
         <div className="flex items-start space-x-3">
           <span className="text-2xl animate-pulse-gentle">{emoji}</span>
           <div>
-            <h4 className="font-bold text-sm text-mentora-brightPink mb-1">DID YOU KNOW</h4>
-            <p className="text-sm text-mentora-text">{tip}</p>
+            <h4 className="font-bold text-sm text-mentora-brightPink mb-1 dark:text-mentora-brightPink">DID YOU KNOW</h4>
+            <p className="text-sm text-mentora-text dark:text-white">{tip}</p>
           </div>
         </div>
       </div>
