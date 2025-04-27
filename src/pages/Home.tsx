@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,10 +5,10 @@ import { ArrowRight, Brain, Heart, Users, Shield } from "lucide-react";
 
 const Home = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-[#2F2F2F]">
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden bg-white dark:bg-[#2F2F2F]">
-        <div className="absolute inset-0 bg-gradient-to-br from-mentora-pink/20 via-mentora-blue/10 to-mentora-brightPink/10 dark:from-mentora-pink/10 dark:via-mentora-blue/5 dark:to-mentora-brightPink/5 -z-10" />
+      <section className="relative py-20 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-mentora-pink/20 via-mentora-blue/20 to-mentora-brightPink/20 dark:from-mentora-pink/10 dark:via-mentora-blue/10 dark:to-mentora-brightPink/10 -z-10" />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
@@ -37,7 +36,7 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white dark:bg-[#2F2F2F]">
+      <section className="py-16 bg-white/50 dark:bg-[#2F2F2F]/50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4 text-[#2F2F2F] dark:text-white">How Mentora Helps You</h2>
@@ -91,7 +90,7 @@ const Home = () => {
       </section>
 
       {/* Testimonial Section */}
-      <section className="py-16 bg-gray-50 dark:bg-[#403E43]">
+      <section className="py-16 bg-gradient-to-br from-gray-50/80 to-white/80 dark:from-[#403E43]/80 dark:to-[#2F2F2F]/80 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4 dark:text-white">Stories from Our Community</h2>
@@ -154,7 +153,7 @@ const Home = () => {
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-mentora-blue/30 via-mentora-pink/20 to-mentora-brightPink/30 dark:from-mentora-blue/20 dark:via-mentora-pink/10 dark:to-mentora-brightPink/20 -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-mentora-blue/30 via-mentora-pink/30 to-mentora-brightPink/30 dark:from-mentora-blue/20 dark:via-mentora-pink/20 dark:to-mentora-brightPink/20 -z-10 backdrop-blur-sm" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white">

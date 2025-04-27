@@ -74,8 +74,7 @@
   }
   
   body {
-    @apply bg-white text-[#2F2F2F] dark:bg-[#2F2F2F] dark:text-white;
-    color: #2F2F2F;
+    @apply bg-gradient-to-br from-[#F8F9FA] via-[#F5CAC3]/10 to-[#FFA6C1]/10 text-[#2F2F2F] dark:from-[#2F2F2F] dark:via-[#403E43] dark:to-[#2F2F2F] dark:text-white min-h-screen;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -101,7 +100,7 @@
   }
   
   .mentora-card {
-    @apply bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 dark:bg-[#403E43] dark:border-gray-700;
+    @apply bg-white/80 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 backdrop-blur-sm dark:bg-[#403E43] dark:border-gray-700;
   }
   
   .mentora-button {
