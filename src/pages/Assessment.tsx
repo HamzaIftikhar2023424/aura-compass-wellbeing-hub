@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, HelpCircle, Smile, Meh, Frown } from "lucide-react";
@@ -140,9 +139,9 @@ const Assessment = () => {
           <span className="text-sm text-mentora-subtext">Question {currentQuestion + 1} of {generalQuestionnaire.length}</span>
           <span className="text-sm font-medium">{Math.round((currentQuestion + 1) / generalQuestionnaire.length * 100)}%</span>
         </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+        <div className="w-full bg-cyan-100 dark:bg-cyan-900 rounded-full h-2.5">
           <div 
-            className="bg-gradient-to-r from-mentora-pink to-mentora-brightPink h-2.5 rounded-full" 
+            className="bg-gradient-to-r from-cyan-400 to-cyan-500 h-2.5 rounded-full" 
             style={{ width: `${(currentQuestion + 1) / generalQuestionnaire.length * 100}%` }}
           ></div>
         </div>
