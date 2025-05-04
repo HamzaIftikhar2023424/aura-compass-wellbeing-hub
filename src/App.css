@@ -143,3 +143,55 @@
   background: linear-gradient(135deg, rgba(64,62,67,0.7) 0%, rgba(45,43,48,0.9) 100%);
   backdrop-filter: blur(10px);
 }
+
+/* Gradient text animations */
+.gradient-text {
+  background-image: linear-gradient(90deg, #3EBBB1, #FF9F4A);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* Image hover effects */
+.img-hover-zoom {
+  overflow: hidden;
+}
+
+.img-hover-zoom img {
+  transition: transform .5s ease;
+}
+
+.img-hover-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* Card decoration */
+.card-decoration {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-decoration::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(62, 187, 177, 0.3) 0%, rgba(255, 159, 74, 0.1) 100%);
+  opacity: 0.5;
+  transition: all 0.5s ease;
+}
+
+.card-decoration:hover::before {
+  transform: translate(-30px, 30px) scale(1.2);
+}
