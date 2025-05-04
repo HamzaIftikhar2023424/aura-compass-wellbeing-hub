@@ -22,23 +22,23 @@ export default {
       colors: {
         // Custom Mentora color palette
         mentora: {
-          pink: '#F5CAC3',
-          blue: '#A8DADC',
-          brightPink: '#FFA6C1',
+          teal: '#3EBBB1',
+          orange: '#FF9F4A',
+          cream: '#FFF1C6',
           white: '#FFFFFF',
           text: '#2F2F2F',
           subtext: '#6E7E91',
         },
         primary: {
-          DEFAULT: '#F5CAC3',
+          DEFAULT: '#3EBBB1',
           foreground: '#2F2F2F',
         },
         secondary: {
-          DEFAULT: '#A8DADC',
+          DEFAULT: '#FF9F4A',
           foreground: '#2F2F2F',
         },
         accent: {
-          DEFAULT: '#FFA6C1',
+          DEFAULT: '#FFF1C6',
           foreground: '#2F2F2F',
         },
         border: "hsl(var(--border))",

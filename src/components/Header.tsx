@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,20 +13,22 @@ const Header = () => {
     <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-mentora-pink to-mentora-brightPink flex items-center justify-center shadow-md">
-            <span className="text-white font-bold text-lg">M</span>
-          </div>
-          <span className="font-bold text-2xl bg-gradient-to-r from-mentora-pink via-mentora-blue to-mentora-brightPink bg-clip-text text-transparent dark:text-white">
+          <img 
+            src="/lovable-uploads/eba74012-7138-42ae-9d9a-0888bacd2d4f.png" 
+            alt="Mentora Logo" 
+            className="h-10 w-10 rounded-full" 
+          />
+          <span className="font-bold text-2xl bg-gradient-to-r from-cyan-500 via-teal-400 to-orange-400 bg-clip-text text-transparent dark:text-white">
             Mentora
           </span>
         </Link>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-mentora-text hover:text-mentora-brightPink transition-colors dark:text-white dark:font-bold">Home</Link>
-          <Link to="/conditions" className="text-mentora-text hover:text-mentora-brightPink transition-colors dark:text-white dark:font-bold">Conditions</Link>
-          <Link to="/assessment" className="text-mentora-text hover:text-mentora-brightPink transition-colors dark:text-white dark:font-bold">Assessment</Link>
-          <Link to="/therapy" className="text-mentora-text hover:text-mentora-brightPink transition-colors dark:text-white dark:font-bold">Therapy</Link>
-          <Link to="/community" className="text-mentora-text hover:text-mentora-brightPink transition-colors dark:text-white dark:font-bold">Community</Link>
+          <Link to="/" className="text-mentora-text hover:text-cyan-500 transition-colors dark:text-white dark:font-bold">Home</Link>
+          <Link to="/conditions" className="text-mentora-text hover:text-cyan-500 transition-colors dark:text-white dark:font-bold">Conditions</Link>
+          <Link to="/assessment" className="text-mentora-text hover:text-cyan-500 transition-colors dark:text-white dark:font-bold">Assessment</Link>
+          <Link to="/therapy" className="text-mentora-text hover:text-cyan-500 transition-colors dark:text-white dark:font-bold">Therapy</Link>
+          <Link to="/community" className="text-mentora-text hover:text-cyan-500 transition-colors dark:text-white dark:font-bold">Community</Link>
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
@@ -33,10 +36,10 @@ const Header = () => {
             {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
           </Button>
           <Link to="/login">
-            <Button variant="ghost" className="hover:text-mentora-brightPink">Login</Button>
+            <Button variant="ghost" className="hover:text-cyan-500">Login</Button>
           </Link>
           <Link to="/register">
-            <Button className="bg-gradient-to-r from-mentora-pink to-mentora-brightPink hover:opacity-90 text-white">
+            <Button className="bg-gradient-to-r from-cyan-500 to-teal-400 hover:opacity-90 text-white">
               Register
             </Button>
           </Link>
@@ -65,7 +68,7 @@ const Header = () => {
                 <Button variant="outline" className="w-full">Login</Button>
               </Link>
               <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                <Button className="w-full bg-gradient-to-r from-mentora-pink to-mentora-brightPink text-white">Register</Button>
+                <Button className="w-full bg-gradient-to-r from-cyan-500 to-teal-400 text-white">Register</Button>
               </Link>
             </div>
           </div>
