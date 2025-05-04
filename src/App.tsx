@@ -15,6 +15,13 @@ import Journal from "./pages/Journal";
 import TherapySessions from "./pages/TherapySessions";
 import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
+import TherapistDirectory from "./pages/TherapistDirectory";
+import Feedback from "./pages/Feedback";
+import Prescriptions from "./pages/Prescriptions";
+import Chatroom from "./pages/Chatroom";
+import GoalsAchievements from "./pages/GoalsAchievements";
+import Motivational from "./pages/Motivational";
+import PeerSupport from "./pages/PeerSupport";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +56,41 @@ const App = () => (
             <Route path="/therapy" element={
               <PrivateRoute>
                 <Layout><TherapySessions /></Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/therapists" element={
+              <PrivateRoute>
+                <Layout><TherapistDirectory /></Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/feedback" element={
+              <PrivateRoute>
+                <Layout><Feedback /></Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/prescriptions" element={
+              <PrivateRoute>
+                <Layout><Prescriptions /></Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/chatroom" element={
+              <PrivateRoute>
+                <Layout><Chatroom /></Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/goals" element={
+              <PrivateRoute>
+                <Layout><GoalsAchievements /></Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/motivational" element={
+              <PrivateRoute>
+                <Layout><Motivational /></Layout>
+              </PrivateRoute>
+            } />
+            <Route path="/peer-support" element={
+              <PrivateRoute>
+                <Layout><PeerSupport /></Layout>
               </PrivateRoute>
             } />
             
