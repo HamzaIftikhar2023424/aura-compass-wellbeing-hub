@@ -1,6 +1,7 @@
 
 import * as React from "react"
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
+import { cn } from "@/lib/utils"
 
 const Collapsible = CollapsiblePrimitive.Root
 
@@ -12,10 +13,13 @@ const CollapsibleContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <CollapsiblePrimitive.CollapsibleContent
     ref={ref}
-    className={className}
+    className={cn(
+      "overflow-hidden transition-all data-[state=closed]:animate-collapse-up data-[state=open]:animate-collapse-down",
+      className
+    )}
     {...props}
   >
-    {children}
+    <div className="animate-fade-in">{children}</div>
   </CollapsiblePrimitive.CollapsibleContent>
 ))
 

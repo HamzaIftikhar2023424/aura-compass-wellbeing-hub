@@ -12,9 +12,10 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <ThemeProvider>
-      <div className="min-h-screen flex flex-col transition-colors duration-300">
+      <div className="min-h-screen flex flex-col transition-colors duration-500">
+        <div className="fixed inset-0 bg-pattern-light dark:bg-pattern-dark pointer-events-none z-0"></div>
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow z-10 animate-fade-in">
           {children}
         </main>
         <Footer />
