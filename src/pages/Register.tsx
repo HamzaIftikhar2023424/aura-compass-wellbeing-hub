@@ -1,53 +1,48 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Eye, EyeOff, User, Mail } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Register = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [anonymousMode, setAnonymousMode] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
-      toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match.",
-        variant: "destructive",
-      });
+      setPasswordError("Passwords don't match");
       return;
     }
     
     if (!agreeTerms) {
-      toast({
-        title: "Please agree to terms",
-        description: "You must agree to the terms of service and privacy policy.",
-        variant: "destructive",
-      });
+      setPasswordError("You must agree to the terms of service");
       return;
     }
     
-    // This would connect to backend in a real implementation
-    console.log("Register with:", { name, email, password, anonymousMode });
-    
-    // For demo, show successful registration toast
-    toast({
-      title: "Registration successful",
-      description: "Your account has been created successfully!",
-    });
-    
-    // Redirect would occur here in a real implementation
+    try {
+      setIsLoading(true);
+      await register(username, email, password);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error("Registration error:", error);
+      // Error is handled in AuthContext
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,7 +50,7 @@ const Register = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold">Create your account</h1>
-          <p className="mt-2 text-mentora-subtext">
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
             Join Mentora and start your wellbeing journey
           </p>
         </div>
@@ -64,19 +59,18 @@ const Register = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="username">Username</Label>
                 <div className="relative">
                   <Input
-                    id="name"
+                    id="username"
                     type="text"
-                    placeholder="Your name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Choose a username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="pl-10"
-                    required={!anonymousMode}
-                    disabled={anonymousMode}
+                    required
                   />
-                  <User className="absolute left-3 top-3 h-4 w-4 text-mentora-subtext" />
+                  <User className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                 </div>
               </div>
 
@@ -92,7 +86,7 @@ const Register = () => {
                     className="pl-10"
                     required
                   />
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-mentora-subtext" />
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
                 </div>
               </div>
 
@@ -104,13 +98,16 @@ const Register = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setPasswordError("");
+                    }}
                     className="pr-10"
                     required
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-3 text-mentora-subtext hover:text-mentora-brightPink"
+                    className="absolute right-3 top-3 text-gray-500 hover:text-cyan-500"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -126,43 +123,38 @@ const Register = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      setPasswordError("");
+                    }}
                     className="pr-10"
                     required
                   />
                 </div>
               </div>
+              
+              {passwordError && (
+                <div className="text-red-500 text-sm">{passwordError}</div>
+              )}
 
               <div className="flex items-center space-x-2 pt-2">
-                <Switch 
-                  id="anonymous-mode" 
-                  checked={anonymousMode} 
-                  onCheckedChange={setAnonymousMode}
-                />
-                <Label htmlFor="anonymous-mode">Anonymous Mode</Label>
-              </div>
-              
-              {anonymousMode && (
-                <div className="rounded-md bg-mentora-blue/10 p-3">
-                  <p className="text-sm text-mentora-subtext">
-                    In anonymous mode, we'll minimize personal identifiers while still providing personalized support.
-                  </p>
-                </div>
-              )}
-              
-              <div className="flex items-center space-x-2 pt-2">
-                <Switch 
-                  id="agree-terms" 
-                  checked={agreeTerms} 
-                  onCheckedChange={setAgreeTerms}
+                <input 
+                  type="checkbox" 
+                  id="agree-terms"
+                  checked={agreeTerms}
+                  onChange={() => {
+                    setAgreeTerms(!agreeTerms);
+                    setPasswordError("");
+                  }}
+                  className="rounded text-cyan-500 focus:ring-cyan-500"
                 />
                 <Label htmlFor="agree-terms" className="text-sm">
                   I agree to the{" "}
-                  <Link to="/terms" className="text-mentora-brightPink hover:underline">
+                  <Link to="/terms" className="text-cyan-500 hover:underline">
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link to="/privacy" className="text-mentora-brightPink hover:underline">
+                  <Link to="/privacy" className="text-cyan-500 hover:underline">
                     Privacy Policy
                   </Link>
                 </Label>
@@ -171,15 +163,16 @@ const Register = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-mentora-pink to-mentora-brightPink hover:opacity-90 text-white py-6"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:opacity-90 text-white py-6"
             >
-              Create Account
+              {isLoading ? "Creating Account..." : "Create Account"}
             </Button>
 
             <div className="text-center mt-4">
-              <p className="text-sm text-mentora-subtext">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Already have an account?{" "}
-                <Link to="/login" className="font-medium text-mentora-brightPink hover:text-mentora-pink">
+                <Link to="/login" className="font-medium text-cyan-500 hover:text-cyan-600">
                   Sign in
                 </Link>
               </p>
