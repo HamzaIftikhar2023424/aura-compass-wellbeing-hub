@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,9 +23,11 @@ const Journal = () => {
 
   useEffect(() => {
     const fetchJournalEntries = async () => {
+      if (!user) return;
+      
       try {
         setIsLoading(true);
-        const response = await journalService.getJournals();
+        const response = await journalService.getJournals(user.id);
         setJournalEntries(response.data || []);
       } catch (error) {
         console.error("Error fetching journal entries:", error);
@@ -41,7 +42,7 @@ const Journal = () => {
     };
 
     fetchJournalEntries();
-  }, []);
+  }, [user]);
 
   const handleJournalSubmit = async () => {
     if (!journalContent.trim() || !user) return;

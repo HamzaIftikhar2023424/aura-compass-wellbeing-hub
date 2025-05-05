@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,9 +30,11 @@ const MoodTracker = () => {
 
   useEffect(() => {
     const fetchMoods = async () => {
+      if (!user) return;
+      
       try {
         setIsLoading(true);
-        const response = await moodService.getMoods();
+        const response = await moodService.getMoods(user.id);
         setMoodHistory(response.data || []);
       } catch (error) {
         console.error("Error fetching mood history:", error);
@@ -48,7 +49,7 @@ const MoodTracker = () => {
     };
 
     fetchMoods();
-  }, []);
+  }, [user]);
 
   const handleMoodSubmit = async () => {
     if (!selectedMood || !user) return;
