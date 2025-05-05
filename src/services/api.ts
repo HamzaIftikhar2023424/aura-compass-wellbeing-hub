@@ -39,10 +39,14 @@ export const journalService = {
   },
 };
 
-// Therapy session services
+// Therapy session services - Updated to match backend API
 export const therapyService = {
+  // Get all sessions - New method
+  getAllSessions: async () => {
+    return api.get('/sessions');
+  },
   createSession: async (userName: string, mood: string, notes: string) => {
-    return api.post('/sessions/', { user_name: userName, mood, notes });
+    return api.post('/sessions', { user_name: userName, mood, notes });
   },
   getSession: async (id: number) => {
     return api.get(`/sessions/${id}`);

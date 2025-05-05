@@ -28,16 +28,11 @@ const TherapySessions = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const fetchSessions = async () => {
-    // This is a mock function since the API doesn't have a get all sessions endpoint
-    // In a real application, you would call the API to get all sessions
     setIsLoading(true);
     try {
-      // Mock data - in real app, this would come from API
-      const mockSessions = [
-        { id: 1, user_name: "Jane Doe", mood: "happy", notes: "Great progress today!" },
-        { id: 2, user_name: "John Smith", mood: "anxious", notes: "Discussed coping strategies for stress." }
-      ];
-      setSessions(mockSessions);
+      // Updated: Call the real API endpoint
+      const response = await therapyService.getAllSessions();
+      setSessions(response.data || []);
     } catch (error) {
       console.error("Error fetching sessions:", error);
       toast({
@@ -45,6 +40,13 @@ const TherapySessions = () => {
         description: "Could not fetch therapy sessions.",
         variant: "destructive",
       });
+      
+      // Fallback to mock data if API isn't available yet
+      const mockSessions = [
+        { id: 1, user_name: "Jane Doe", mood: "happy", notes: "Great progress today!" },
+        { id: 2, user_name: "John Smith", mood: "anxious", notes: "Discussed coping strategies for stress." }
+      ];
+      setSessions(mockSessions);
     } finally {
       setIsLoading(false);
     }
@@ -157,7 +159,7 @@ const TherapySessions = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <Card>
+          <Card className="card-decoration">
             <CardHeader>
               <CardTitle>{isEditing ? "Edit Session" : "New Therapy Session"}</CardTitle>
               <CardDescription>
@@ -179,6 +181,7 @@ const TherapySessions = () => {
                     onChange={handleInputChange}
                     placeholder="Enter client name"
                     required
+                    className="transition-all duration-300 focus:ring-mentora-teal focus:border-mentora-teal"
                   />
                 </div>
                 <div>
@@ -189,7 +192,7 @@ const TherapySessions = () => {
                     value={formData.mood} 
                     onValueChange={handleSelectChange}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="transition-all duration-300 focus:ring-mentora-teal focus:border-mentora-teal">
                       <SelectValue placeholder="Select mood" />
                     </SelectTrigger>
                     <SelectContent>
@@ -213,6 +216,7 @@ const TherapySessions = () => {
                     placeholder="Enter session notes..."
                     rows={5}
                     required
+                    className="transition-all duration-300 focus:ring-mentora-teal focus:border-mentora-teal"
                   />
                 </div>
               </CardContent>
@@ -223,6 +227,7 @@ const TherapySessions = () => {
                     variant="outline" 
                     onClick={handleCancel}
                     disabled={isLoading}
+                    className="transition-all duration-300 hover:bg-gray-100"
                   >
                     Cancel
                   </Button>
@@ -230,6 +235,7 @@ const TherapySessions = () => {
                 <Button 
                   type="submit"
                   disabled={isLoading}
+                  className="bg-mentora-teal hover:bg-mentora-teal/90 transition-all duration-300"
                 >
                   {isLoading ? 'Saving...' : isEditing ? 'Update Session' : 'Create Session'}
                 </Button>
@@ -248,7 +254,7 @@ const TherapySessions = () => {
             <p className="text-gray-500">No therapy sessions found.</p>
           ) : (
             sessions.map((session) => (
-              <Card key={session.id} className="border-l-4 border-l-cyan-500">
+              <Card key={session.id} className="border-l-4 border-l-cyan-500 transition-all duration-300 hover:shadow-lg card-decoration">
                 <CardHeader className="pb-2">
                   <div className="flex justify-between">
                     <CardTitle>{session.user_name}</CardTitle>
@@ -265,6 +271,7 @@ const TherapySessions = () => {
                     size="sm" 
                     variant="outline"
                     onClick={() => handleEdit(session)}
+                    className="transition-all duration-300 hover:bg-gray-100"
                   >
                     Edit
                   </Button>
@@ -272,6 +279,7 @@ const TherapySessions = () => {
                     size="sm" 
                     variant="destructive"
                     onClick={() => handleDelete(session.id)}
+                    className="transition-all duration-300"
                   >
                     Delete
                   </Button>
