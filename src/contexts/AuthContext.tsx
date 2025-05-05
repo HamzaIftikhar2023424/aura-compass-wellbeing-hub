@@ -1,7 +1,7 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { authService } from '@/services/api';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface User {
   id: number;
@@ -22,6 +22,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Check if user is logged in on mount
@@ -36,10 +37,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setIsLoading(true);
       const response = await authService.login(username, password);
+      
+      if (!response.data) {
+        throw new Error('Invalid credentials');
+      }
+      
       const userData = response.data;
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
-      toast({ title: "Login successful", description: `Welcome back, ${userData.username}!` });
+      toast({ 
+        title: "Login successful", 
+        description: `Welcome back, ${userData.username}!` 
+      });
     } catch (error) {
       console.error('Login failed:', error);
       toast({ 
@@ -56,8 +65,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const register = async (username: string, email: string, password: string) => {
     try {
       setIsLoading(true);
-      const response = await authService.register(username, email, password);
-      toast({ title: "Registration successful", description: "Your account has been created" });
+      await authService.register(username, email, password);
+      toast({ 
+        title: "Registration successful", 
+        description: "Your account has been created" 
+      });
       // Auto-login after registration
       await login(username, password);
     } catch (error) {
@@ -76,7 +88,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    toast({ title: "Logged out", description: "You have been successfully logged out" });
+    toast({ 
+      title: "Logged out", 
+      description: "You have been successfully logged out" 
+    });
   };
 
   return (

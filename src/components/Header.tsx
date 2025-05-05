@@ -1,144 +1,199 @@
 
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Moon, Sun, Menu, X, User } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Menu, X } from "lucide-react";
-import { useTheme } from "./ThemeProvider";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
-  const { theme, toggleTheme } = useTheme();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-  // Handle scroll effect for header
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location.pathname]);
-  
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    setIsOpen(false);
+  };
+
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${
-      scrolled 
-        ? "bg-white/90 dark:bg-gray-900/90 shadow-md backdrop-blur-lg" 
-        : "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md"
-    } border-b border-gray-200 dark:border-gray-800`}>
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2 group">
-          <div className="overflow-hidden rounded-full transition-all duration-300 group-hover:shadow-lg">
-            <img 
-              src="/lovable-uploads/eba74012-7138-42ae-9d9a-0888bacd2d4f.png" 
-              alt="Mentora Logo" 
-              className="h-10 w-10 rounded-full transition-transform duration-500 group-hover:scale-110" 
-            />
-          </div>
-          <span className="font-bold text-2xl bg-gradient-to-r from-cyan-500 via-teal-400 to-orange-400 bg-clip-text text-transparent transition-all duration-300 group-hover:brightness-110 dark:text-white">
-            Mentora
-          </span>
-        </Link>
+    <header className="bg-white dark:bg-gray-800 shadow-sm z-20 relative">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between py-4">
+          <Link to="/" className="flex items-center space-x-2">
+            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-500 to-teal-600 bg-clip-text text-transparent">
+              Mentora
+            </span>
+          </Link>
 
-        <nav className="hidden md:flex items-center space-x-8">
-          {[
-            { path: "/", label: "Home" },
-            { path: "/conditions", label: "Conditions" },
-            { path: "/assessment", label: "Assessment" },
-            { path: "/therapy", label: "Therapy" },
-            { path: "/community", label: "Community" },
-          ].map(({ path, label }) => (
-            <Link 
-              key={path}
-              to={path} 
-              className={`relative text-mentora-text hover:text-cyan-500 dark:text-white dark:font-bold transition-colors after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-cyan-500 after:transition-transform hover:after:scale-x-100 ${
-                location.pathname === path ? "text-cyan-500 after:scale-x-100" : ""
-              }`}
-            >
-              {label}
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400">
+              Home
             </Link>
-          ))}
-        </nav>
+            {user ? (
+              <>
+                <Link to="/dashboard" className="text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400">
+                  Dashboard
+                </Link>
+                <Link to="/mood" className="text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400">
+                  Mood Tracker
+                </Link>
+                <Link to="/journal" className="text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400">
+                  Journal
+                </Link>
+                <Link to="/therapy" className="text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400">
+                  Therapy
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/about" className="text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400">
+                  About
+                </Link>
+                <Link to="/features" className="text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400">
+                  Features
+                </Link>
+              </>
+            )}
+          </nav>
 
-        <div className="hidden md:flex items-center space-x-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={toggleTheme} 
-            className="rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-          >
-            {theme === "light" ? 
-              <Moon className="h-5 w-5 transition-transform hover:rotate-12" /> : 
-              <Sun className="h-5 w-5 transition-transform hover:rotate-90" />}
-          </Button>
-          <Link to="/login">
-            <Button variant="ghost" className="hover:text-cyan-500 transition-all">Login</Button>
-          </Link>
-          <Link to="/register" className="animate-fade-in">
-            <Button className="bg-gradient-to-r from-cyan-500 to-teal-400 hover:opacity-90 text-white shadow-md hover:shadow-lg transition-all">
-              Register
-            </Button>
-          </Link>
-        </div>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </button>
 
-        <div className="md:hidden flex items-center space-x-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={toggleTheme} 
-            className="rounded-full"
-            aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-          >
-            {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {isMenuOpen ? 
-              <X className="h-6 w-6 transition-transform rotate-90 duration-300" /> : 
-              <Menu className="h-6 w-6 transition-transform duration-300" />}
-          </Button>
+            {user ? (
+              <div className="hidden md:flex items-center space-x-4">
+                <Button 
+                  variant="outline" 
+                  className="flex items-center space-x-2"
+                  onClick={handleLogout}
+                >
+                  <span>Logout</span>
+                </Button>
+                <Button className="bg-gradient-to-r from-cyan-400 to-cyan-500 hover:opacity-90">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>{user.username}</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center space-x-2">
+                <Link to="/login">
+                  <Button variant="outline">Sign In</Button>
+                </Link>
+                <Link to="/register">
+                  <Button className="bg-gradient-to-r from-cyan-400 to-cyan-500 hover:opacity-90">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            )}
+
+            <button
+              className="md:hidden p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              onClick={toggleMenu}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {isMenuOpen && (
-        <div className="md:hidden absolute top-[72px] inset-x-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 animate-fade-in shadow-lg">
-          <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-            {[
-              { path: "/", label: "Home" },
-              { path: "/conditions", label: "Conditions" },
-              { path: "/assessment", label: "Assessment" },
-              { path: "/therapy", label: "Therapy" },
-              { path: "/community", label: "Community" },
-            ].map(({ path, label }, index) => (
-              <Link 
-                key={path}
-                to={path} 
-                className={`py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md dark:text-white transition-colors animate-fade-in`}
-                style={{ animationDelay: `${index * 50}ms` }}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
-            <div className="flex flex-col space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-              <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="outline" className="w-full animate-fade-in" style={{ animationDelay: '250ms' }}>Login</Button>
-              </Link>
-              <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                <Button className="w-full bg-gradient-to-r from-cyan-500 to-teal-400 text-white animate-fade-in" style={{ animationDelay: '300ms' }}>Register</Button>
-              </Link>
-            </div>
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-800 py-4 shadow-lg absolute top-full left-0 right-0 z-50 animate-fade-in">
+          <div className="container mx-auto px-4 space-y-3">
+            <Link
+              to="/"
+              className="block py-2 text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400"
+              onClick={() => setIsOpen(false)}
+            >
+              Home
+            </Link>
+            
+            {user ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="block py-2 text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  to="/mood"
+                  className="block py-2 text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Mood Tracker
+                </Link>
+                <Link
+                  to="/journal"
+                  className="block py-2 text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Journal
+                </Link>
+                <Link
+                  to="/therapy"
+                  className="block py-2 text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Therapy
+                </Link>
+                <button
+                  className="block w-full text-left py-2 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/about"
+                  className="block py-2 text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400"
+                  onClick={() => setIsOpen(false)}
+                >
+                  About
+                </Link>
+                <Link
+                  to="/features"
+                  className="block py-2 text-gray-600 hover:text-cyan-500 dark:text-gray-300 dark:hover:text-cyan-400"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Features
+                </Link>
+                <div className="pt-2 space-y-2">
+                  <Link to="/login" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/register" onClick={() => setIsOpen(false)}>
+                    <Button className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:opacity-90">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -1,6 +1,5 @@
-
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -12,12 +11,14 @@ interface MoodEntry {
   id: number;
   mood: string;
   timestamp: string;
+  user_id: number;
 }
 
 interface JournalEntry {
   id: number;
   content: string;
   timestamp: string;
+  user_id: number;
 }
 
 const Dashboard = () => {
@@ -25,28 +26,38 @@ const Dashboard = () => {
   const [moods, setMoods] = useState<MoodEntry[]>([]);
   const [journals, setJournals] = useState<JournalEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Redirect to login if not authenticated
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     const fetchData = async () => {
       try {
         setIsLoading(true);
         // Fetch user's mood and journal data
         const [moodsResponse, journalsResponse] = await Promise.all([
-          moodService.getMoods(),
-          journalService.getJournals()
+          moodService.getMoods(user.id),
+          journalService.getJournals(user.id)
         ]);
         
         setMoods(moodsResponse.data || []);
         setJournals(journalsResponse.data || []);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
+        // If API fails, use empty arrays
+        setMoods([]);
+        setJournals([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [user, navigate]);
 
   const getLatestMood = () => {
     if (moods.length === 0) return null;
@@ -69,11 +80,15 @@ const Dashboard = () => {
     return Math.round((completed / totalTasks) * 100);
   };
 
+  if (!user) {
+    return null; // Will redirect in useEffect
+  }
+
   return (
     <div className="min-h-[calc(100vh-80px)] bg-gray-50 dark:bg-gray-900 py-12">
       <div className="container mx-auto px-4">
         <div className="mb-10">
-          <h1 className="text-3xl font-bold">Welcome back, {user?.username}</h1>
+          <h1 className="text-3xl font-bold">Welcome back, {user.username}</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
             Track your progress and continue your wellness journey
           </p>

@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface PrivateRouteProps {
@@ -9,6 +9,14 @@ interface PrivateRouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // After loading is complete, if no user is found, redirect to login
+    if (!isLoading && !user) {
+      navigate('/login');
+    }
+  }, [isLoading, user, navigate]);
 
   if (isLoading) {
     // Show loading state while checking authentication

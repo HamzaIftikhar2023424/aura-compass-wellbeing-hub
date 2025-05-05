@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Create axios instance with base configuration
@@ -24,8 +23,8 @@ export const moodService = {
   createMood: async (mood: string, userId: number) => {
     return api.post('/moods', { mood, user_id: userId });
   },
-  getMoods: async () => {
-    return api.get('/moods');
+  getMoods: async (userId: number) => {
+    return api.get(`/moods?user_id=${userId}`);
   },
 };
 
@@ -34,16 +33,18 @@ export const journalService = {
   createJournal: async (content: string, userId: number) => {
     return api.post('/journals', { content, user_id: userId });
   },
-  getJournals: async () => {
-    return api.get('/journals');
+  getJournals: async (userId: number) => {
+    return api.get(`/journals?user_id=${userId}`);
   },
 };
 
-// Therapy session services - Updated to match backend API
+// Therapy session services
 export const therapyService = {
-  // Get all sessions - New method
   getAllSessions: async () => {
     return api.get('/sessions');
+  },
+  getUserSessions: async (userName: string) => {
+    return api.get(`/sessions?user_name=${userName}`);
   },
   createSession: async (userName: string, mood: string, notes: string) => {
     return api.post('/sessions', { user_name: userName, mood, notes });
